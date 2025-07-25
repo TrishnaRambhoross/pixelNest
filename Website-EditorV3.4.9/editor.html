@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Website Visual Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet/less" type="text/css" href="style.less" />
+</head>
+
+<body class="editor-mode">
+<!-- Mobile Toggle Buttons -->
+    <div class="d-flex">
+        <!-- Sidebar Toolbar -->
+        <aside id="mobileSidebar" class="toolbar toolbar-left p-3"
+            style="user-select: none;">
+            <!-- Header Options menuManager-->
+            <section class="blocks d-flex flex-wrap border-bottom pb-3 mb-3">
+                <h5 href="#section-blocks" role="button" aria-expanded="true" class="mb-0 w-100">
+                    <i class="fas fa-gear"></i> Header Options
+                </h5>
+                <button class="btn btn-primary bottom-0 start-0 m-3 zindex-tooltip w-100" data-bs-toggle="modal"
+                    data-bs-target="#menuManagerModal" style="z-index: 1050;">
+                    Menu Manager
+                    <i class="fas fa-pen-to-square"></i>
+                </button>
+            </section>
+
+            <!-- Columns -->
+            <section class="blocks d-flex flex-wrap border-bottom pb-3 mb-3">
+                <h5 href="#section-columns" role="button" aria-expanded="true"
+                    class="mb-0 w-100">
+                    <i class="fas fa-columns me-2"></i> Columns
+                </h5>
+                <div id="section-columns">
+                    <div class="mb-2 mt-3 d-flex flex-wrap gap-2 justify-content-start">
+                        <div class="block column-button" draggable="true" data-type="columns1">
+                            <div class="column-preview">
+                                <div class="column-bar"></div>
+                            </div>
+                        </div>
+                        <div class="block column-button" draggable="true" data-type="columns2">
+                            <div class="column-preview">
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                            </div>
+                        </div>
+                        <div class="block column-button" draggable="true" data-type="columns3">
+                            <div class="column-preview">
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                            </div>
+                        </div>
+                        <div class="block column-button" draggable="true" data-type="columns4">
+                            <div class="column-preview">
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                            </div>
+                        </div>
+                        <div class="block column-button" draggable="true" data-type="columns5">
+                            <div class="column-preview">
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="block column-button" draggable="true" data-type="columns6">
+                            <div class="column-preview">
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                                <div class="column-bar"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Blocks -->
+            <section class="blocks d-flex flex-wrap border-bottom pb-3 mb-3">
+                <h5 href="#section-blocks" role="button" aria-expanded="true"
+                    class="mb-0 w-100">
+                    <i class="fas fa-cube me-2"></i> Blocks
+                </h5>
+                <div id="section-blocks">
+                    <div class="mt-3">
+                        <div class="block btn rounded mb-2" draggable="true" data-type="text">📝 Text</div>
+                        <div class="block btn rounded mb-2" draggable="true" data-type="image">🖼️ Image</div>
+                        <div class="block btn rounded mb-2" draggable="true" data-type="video">🎥 Video</div>
+                        <div class="block btn rounded mb-2" draggable="true" data-type="cta">🔘 CTA</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Headers -->
+            <section class="blocks d-flex flex-wrap border-bottom pb-3 mb-3">
+                <h5 href="#section-columns" role="button" aria-expanded="true" class="mb-0 w-100">
+                    <i class="fas fa-columns me-2"></i> Structures
+                </h5>
+                <div id="section-blocks">
+                    <div class="mt-3">
+                        <div draggable="true" data-group-type="header" class="block btn rounded mb-2">
+                            <i class="fas fa-envelope-open-text me-2"></i> Headers
+                        </div>
+                        <div draggable="true" data-group-type="hero" class="block btn rounded mb-2">
+                            <i class="fas fa-window-maximize me-2"></i> Heroes
+                        </div>
+                        <div draggable="true" data-group-type="newsletter" class="block btn rounded mb-2">
+                            <i class="fas fa-envelope-open-text me-2"></i> Newsletters
+                        </div>
+                        <div draggable="true" data-group-type="slider" class="block btn rounded mb-2">
+                            <i class="fas fa-envelope-open-text me-2"></i> Sliders
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <!-- Main Canvas Area -->
+        <main class="main-container">
+            <section class="bg-dark w-100 p-3 d-flex justify-content-center"> 
+                <div class="d-flex justify-content-center gap-3">
+                    <select id="websiteSelector" class="form-select form-select-sm me-3" style="width: 200px;">
+                        <!-- Options will be dynamically populated -->
+                    </select>
+                      
+                    <p class="text-white mb-0 d-flex align-items-center">
+                        <i class="fas fa-cogs me-2"></i> Actions
+                    </p>
+            
+                    <div class="d-flex gap-3">
+                        <!-- Desktop Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle text-white" type="button" id="dropdownDesktop"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-display"></i> Desktop
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownDesktop">
+                                <li><button class="dropdown-item resizer" data-size="1440"><i class="bi bi-display"></i> 1440</button></li>
+                                <li><button class="dropdown-item resizer" data-size="1366"><i class="bi bi-display"></i> 1366</button></li>
+                                <li><button class="dropdown-item resizer" data-size="1280"><i class="bi bi-display"></i> 1280</button></li>
+                                <li><button class="dropdown-item resizer" data-size="1080"><i class="bi bi-display"></i> 1080</button></li>
+                                <li><button class="dropdown-item resizer" data-size="1024"><i class="bi bi-display"></i> 1024</button></li>
+                            </ul>
+                        </div>
+                    
+                        <!-- Mobile Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle text-white" type="button" id="dropdownMobile"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-phone"></i> Mobile
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMobile">
+                                <li><button class="dropdown-item resizer" data-size="800"><i class="bi bi-phone"></i> 800</button></li>
+                                <li><button class="dropdown-item resizer" data-size="768"><i class="bi bi-phone"></i> 768</button></li>
+                                <li><button class="dropdown-item resizer" data-size="640"><i class="bi bi-phone"></i> 640</button></li>
+                                <li><button class="dropdown-item resizer" data-size="428"><i class="bi bi-phone"></i> 428</button></li>
+                                <li><button class="dropdown-item resizer" data-size="414"><i class="bi bi-phone"></i> 414</button></li>
+                                <li><button class="dropdown-item resizer" data-size="375"><i class="bi bi-phone"></i> 375</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                      
+                    <button class="btn btn-primary" id="togglePreviewBtn">👁️ Preview</button>
+                    <button class="btn btn-primary" onclick="saveSite()">💾 Save</button>
+
+                    <div class="resizeWebsite d-flex align-items-center">
+                        <label for="widthSelect">Website Width:&nbsp;</label>
+                        <select id="widthSelect">
+                            <option value="container-fluid">Fullwidth</option>
+                            <option value="container">max-width & centered</option>
+                            <option value="container-xxl">1320px</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+            <section class="main-editor-canvas p-4">
+                <div id="header-canvas" class="editor-canvas" ondragover="event.preventDefault()" data-section="header"></div>
+                <div id="editor-canvas" class="editor-canvas border-top-0 border-bottom-0" ondragover="event.preventDefault()" data-section="main"></div>
+                <div id="footer-canvas" class="editor-canvas" ondragover="event.preventDefault()" data-section="footer"></div>
+            </section>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside id="styleSidebar" class="toolbar toolbar-right p-3 border-end" style="user-select: none;">
+            <!-- Style Actions -->
+            <section class="blocks d-flex flex-wrap border-bottom pb-3 mb-3">
+                <div class="d-flex justify-content-evenly mt-1 gap-2 w-100">
+                    <button class="btn btn-sm btn-outline-primary" onclick="copyStyles()">📋 Copy</button>
+                    <button class="btn btn-sm btn-outline-success" onclick="pasteStyles()">📥 Paste</button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="resetStyles()">♻️ Reset</button>
+                </div>
+            </section>
+
+            <!-- Styles -->
+            <section class="blocks d-flex flex-wrap border-bottom pb-3 mb-3">
+                <h5 href="#section-styles" role="button" aria-expanded="true"
+                    class="d-flex align-items-center justify-content-between">
+                    <span><i class="fas fa-palette me-2"></i> Styles</span>
+                </h5>
+                <div class="" id="section-styles">
+                    <!-- Color -->
+                    <div class="mb-2 mt-3 input-group">
+                        <label class="input-group-text">Text Color</label>
+                        <input type="color" id="colorPicker" class="form-control form-control-color" />
+                    </div>
+
+                    <!-- Background -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Background</label>
+                        <input type="color" id="bgColor" class="form-control form-control-color" />
+                    </div>
+
+                    <!-- Font Family -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Font</label>
+                        <select id="fontFamily" class="form-select">
+                            <option value="inherit">Default</option>
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', serif">Times</option>
+                            <option value="'Courier New', monospace">Courier</option>
+                            <option value="'Segoe UI', sans-serif">Segoe UI</option>
+                        </select>
+                    </div>
+
+                    <!-- Font Size -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Font Size</label>
+                        <input type="number" id="fontSize" min="8" max="100" class="form-control" />
+                    </div>
+
+                    <!-- Font Weight -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Weight</label>
+                        <select id="fontWeight" class="form-select">
+                            <option value="normal">Normal</option>
+                            <option value="bold">Bold</option>
+                            <option value="lighter">Light</option>
+                            <option value="bolder">Bolder</option>
+                        </select>
+                    </div>
+
+                    <!-- Text Align -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Align</label>
+                        <select id="textAlign" class="form-select">
+                            <option value="left">Left</option>
+                            <option value="center">Center</option>
+                            <option value="right">Right</option>
+                            <option value="justify">Justify</option>
+                        </select>
+                    </div>
+
+                    <!-- Text Transform -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Transform</label>
+                        <select id="textTransform" class="form-select">
+                            <option value="none">None</option>
+                            <option value="uppercase">UPPERCASE</option>
+                            <option value="lowercase">lowercase</option>
+                            <option value="capitalize">Capitalize</option>
+                        </select>
+                    </div>
+
+                    <!-- Line Height -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Line Height</label>
+                        <input type="number" id="lineHeight" min="1" max="3" step="0.1" class="form-control" />
+                    </div>
+
+                    <!-- Letter Spacing -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Letter Spacing</label>
+                        <input type="number" id="letterSpacing" min="0" max="10" step="0.1" class="form-control" />
+                    </div>
+
+                    <!-- Margin -->
+                    <div class="mb-2">
+                        <label class="form-label">Margin (px)</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <input type="number" id="margin-top" min="0" max="100" class="form-control" placeholder="Top">
+                            <input type="number" id="margin-right" min="0" max="100" class="form-control" placeholder="Right">
+                            <input type="number" id="margin-bottom" min="0" max="100" class="form-control" placeholder="Bottom">
+                            <input type="number" id="margin-left" min="0" max="100" class="form-control" placeholder="Left">
+                          </div>
+                    </div>
+
+                    <!-- Padding -->
+                    <div class="mb-2">
+                        <label class="form-label">Padding (px)</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <input type="number" id="padding-top" min="0" max="100" class="form-control" placeholder="Top" />
+                            <input type="number" id="padding-right" min="0" max="100" class="form-control" placeholder="Right" />
+                            <input type="number" id="padding-bottom" min="0" max="100" class="form-control" placeholder="Bottom" />
+                            <input type="number" id="padding-left" min="0" max="100" class="form-control" placeholder="Left" />
+                        </div>
+                    </div>
+
+                    <!-- Border Radius -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Radius</label>
+                        <input type="number" id="borderRadius" min="0" max="50" class="form-control" />
+                    </div>
+
+                    <!-- Border Width -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Border</label>
+                        <input type="number" id="borderWidth" min="0" max="10" class="form-control" />
+                    </div>
+
+                    <!-- Border Style -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Border Style</label>
+                        <select id="borderStyle" class="form-select">
+                            <option value="none">None</option>
+                            <option value="solid">Solid</option>
+                            <option value="dashed">Dashed</option>
+                            <option value="dotted">Dotted</option>
+                            <option value="double">Double</option>
+                            <option value="groove">Groove</option>
+                            <option value="ridge">Ridge</option>
+                            <option value="inset">Inset</option>
+                            <option value="outset">Outset</option>
+                        </select>
+                    </div>
+
+                    <!-- Border Color -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Border Color</label>
+                        <input type="color" id="borderColor" class="form-control form-control-color" />
+                    </div>
+
+                    <!-- Shadow -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Box Shadow</label>
+                        <input type="text" id="boxShadow" class="form-control"
+                            placeholder="e.g. 0px 4px 8px rgba(0,0,0,0.3)" />
+                    </div>
+
+                    <!-- Background Image -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Background Img</label>
+                        <input type="text" id="bgImage" class="form-control" placeholder="Image URL..." />
+                    </div>
+
+                    <!-- Animation -->
+                    <div class="mb-2 input-group">
+                        <label class="input-group-text">Animation</label>
+                        <select id="animation" class="form-select">
+                            <option value="none">None</option>
+                            <option value="fade-in">Fade In</option>
+                            <option value="slide-in-left">Slide Left</option>
+                            <option value="slide-in-right">Slide Right</option>
+                            <option value="zoom-in">Zoom In</option>
+                        </select>
+                    </div>
+
+                    <!-- Custom CSS -->
+                    <div class="mb-2 customCss">
+                        <label class="form-label">Custom CSS (inline)</label>
+                        <input type="text" id="customCss" class="form-control"
+                            placeholder="e.g. border: 1px dashed red;" />
+                    </div>
+                </div>
+            </section>
+        </aside>
+    </div>
+
+    <div id="toast" class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999; display: none;">
+        <div id="toast-content" class="toast align-items-center text-white bg-success border-0 show" role="alert">
+            <div class="d-flex">
+                <div class="toast-body"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Block Group Selection -->
+    <div class="modal modal-lg fade" id="blockSelectionModal" tabindex="-1" role="dialog" aria-labelledby="blockSelectionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="blockSelectionModalLabel">Select a layout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="block-selection-list" class="d-grid gap-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Manager Modal -->
+    <div class="modal fade" id="menuManagerModal" tabindex="-1" aria-labelledby="menuManagerModalLabel">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg d-flex align-items-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <ul class="nav nav-tabs" id="menuManagerTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="multi-tab" data-bs-toggle="tab"
+                                data-bs-target="#multi-content" type="button" role="tab">
+                                Multi-page Menu
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="onepage-tab" data-bs-toggle="tab" data-bs-target="#onepage-content"
+                                type="button" role="tab">
+                                One Page Menu
+                            </button>
+                        </li>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body tab-content">
+                    <!-- Multi-page content -->
+                    <div class="tab-pane fade show active" id="multi-content" role="tabpanel">
+                        <div class="d-flex gap-3">
+                            <div class="flex-fill">
+                                <h6>Active Menus</h6>
+                                <ul id="menuListActive" class="list-group mb-3"></ul>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="newMenuItem"
+                                        placeholder="New menu item name">
+                                    <button class="btn btn-success" id="addMenuBtn" type="button">Add</button>
+                                </div>
+                            </div>
+                            <div class="flex-fill border-start ps-3">
+                                <h6>Disabled Menus</h6>
+                                <ul id="menuListDisabled" class="list-group mb-3"></ul>
+                            </div>
+                        </div>
+                        <button class="btn btn-warning w-100 mt-3" id="validateMenuBtn" type="button">Validate Menu</button>
+                    </div>
+
+                    <!-- One Page content -->
+                    <div class="tab-pane fade" id="onepage-content" role="tabpanel">
+                        <div class="d-flex gap-3">
+                            <div class="flex-fill">
+                                <h6>Active Menus</h6>
+                                <ul id="onePageMenuListActive" class="list-group mb-3"></ul>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">menu</span>
+                                    <input type="text" class="form-control" id="newOnePageMenuItem"
+                                        placeholder="Menu item name">
+                                    <span class="input-group-text">id</span>
+                                    <input type="text" class="form-control" id="newOnePageMenuID" placeholder="Anchor ID">
+                                    <button class="btn btn-success" id="addOnePageMenuBtn" type="button">Add</button>
+                                </div>
+                            </div>
+                            <div class="flex-fill border-start ps-3">
+                                <h6>Disabled Menus</h6>
+                                <ul id="onePageMenuListDisabled" class="list-group mb-3"></ul>
+                            </div>
+                        </div>
+                        <button class="btn btn-warning w-100 mt-3" id="validateOnePageMenuBtn" type="button">Validate One
+                            Page Menu</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/less"></script>
+    <script src="coreJs/swiperEditor.js"></script>
+    <script src="coreJs/addModules.js"></script>
+    <script src="coreJs/menuManager.js"></script>
+    <script src="coreJs/selectWebsite.js"></script>
+    <script src="coreJs/addEditorAttributes.js"></script>
+    <script src="coreJs/editor.core.js"></script>
+    <script src="coreJs/initEditorAttributes.js"></script>
+    <script src="coreJs/editor.ui.js"></script>
+    <script src="coreJs/stylePanel.js"></script>
+    <script src="coreJs/save.js"></script>
+    <script src="coreJs/preview.js"></script>
+    <script src="coreJs/websiteWidth.js"></script>
+</body>
+</html>

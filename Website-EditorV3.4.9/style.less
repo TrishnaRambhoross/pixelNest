@@ -1,0 +1,718 @@
+/***************************************
+ * Dark Mode Default Optimized LESS
+ ***************************************/
+
+/* ================================
+   1. Reset & Base Styles
+================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+  background-color: #272727;
+
+  &:not(.editor-mode) .delete-btn {
+    display: none !important;
+  }
+
+  &.sidebar-open,
+  &.sidebar-style-open {
+    overflow: hidden;
+  }
+}
+
+br {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #495057;
+}
+
+video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ================================
+   2. Layout Structure
+================================ */
+.toolbar {
+  width: 300px;
+  min-height: 100vh;
+  user-select: none;
+  flex-shrink: 0;
+  background-color: #202020;
+  border-right: 1px solid #333;
+  color: #f1f1f1;
+
+  p,
+  span,
+  div,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #f1f1f1;
+  }
+}
+
+main {
+  background: #ececec;
+}
+
+.editor-canvas {
+  border: 1px dotted #b0c7e1;
+
+  .editor-block {
+    position: relative;
+
+    .row {
+      border: 1px solid #b2b2b2;
+    }
+
+    .col {
+      border: 1px dashed #28a745;
+
+      &.column:has(.block-wrapper.image + .block-wrapper.image) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
+#header-canvas {
+  min-height: 5vh;
+}
+
+#editor-canvas {
+  min-height: 50vh;
+  padding: 0;
+  padding-top: 1px;
+  padding-bottom: 3rem;
+}
+
+#footer-canvas {
+  min-height: 5vh;
+}
+
+/* ================================
+   3. Grid & Canvas Elements
+================================ */
+.row {
+  position: relative;
+  min-height: 100px;
+
+  &.row-edit-mode {
+    outline: 2px dashed #00bfff;
+    outline-offset: 0;
+    background-color: rgba(0, 191, 255, 0.1);
+  }
+
+  >.delete-btn:last-of-type {
+    position: absolute;
+    top: -3px;
+    left: -15px;
+    transform: translateY(-50%);
+    background: transparent;
+  }
+
+  >.drag-handle:first-of-type {
+    top: 5px;
+    left: -20px;
+  }
+}
+
+#header-canvas,
+#footer-canvas {
+  .row-block-controls {
+    top: 15px;
+    left: unset;
+    right: -15px;
+  }
+}
+
+/* ================================
+   4. Blocks, Columns & Interactions
+================================ */
+.block,
+.block-wrapper,
+.column {
+  cursor: grab;
+  user-select: none;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  border-color: #464646;
+
+  &:hover,
+  &:active {
+    cursor: pointer;
+    border-color: #57a4f6;
+  }
+}
+
+.column {
+  position: relative;
+  padding: 10px;
+  min-height: 100px;
+  resize: horizontal;
+  min-width: 100px;
+
+  &.drag-over {
+    border: 2px dashed #007bff;
+  }
+}
+
+.block-wrapper {
+  position: relative;
+
+  &.text .block-controls,
+  &.cta .block-controls {
+    left: unset;
+    right: 0;
+    transform: translateY(-50%);
+  }
+
+  &:hover .block-controls {
+    display: flex;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* ================================
+   5. Controls (Drag/Drop/Delete)
+================================ */
+.delete-btn {
+  position: absolute;
+  top: -13px;
+  right: -15px;
+  z-index: 10;
+  background: transparent;
+  border: none;
+  color: #c6c6c6;
+  font-size: 0.9rem;
+  padding: 3px 6px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+}
+
+.drag-handle {
+  cursor: move;
+  font-size: 16px;
+  color: #c6c6c6;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 5;
+  display: none;
+}
+
+.col:hover .drag-handle,
+[class^="col-"]:hover .drag-handle,
+[data-deletable]:hover .drag-handle {
+  display: flex;
+}
+
+.block-controls,
+.row-block-controls,
+.col-block-controls {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+
+  .drag-handle,
+  .delete-btn {
+    position: relative;
+    display: block;
+    padding: 5px;
+    top: unset;
+    left: unset;
+    right: unset;
+  }
+
+  .drag-handle {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &:after {
+      content: ' ';
+      width: 1px;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      background-color: #c6c6c6;
+    }
+  }
+}
+
+.row-block-controls {
+  display: flex;
+  flex-wrap: wrap;
+  width: 30px;
+  top: 30px;
+  left: -12px;
+  border-radius: 1px;
+
+  .drag-handle {
+    color: #fff;
+
+    &:after {
+      content: none;
+    }
+  }
+}
+
+.col-block-controls {
+  display: flex;
+  top: 0;
+  left: unset;
+  right: 0;
+  border-radius: 3px;
+  transform: none;
+}
+
+/* ================================
+   6. Sortable Placeholder
+================================ */
+.sortable-ghost {
+  opacity: 0.6 !important;
+  box-shadow: 0 0 10px 3px rgba(0, 123, 255, 0.5);
+  border: 2px dashed #007bff !important;
+}
+
+/* ================================
+   7. Column Picker UI
+================================ */
+.column-preview {
+  display: flex;
+  gap: 3px;
+}
+
+.column-bar {
+  background-color: #adb5bd;
+  border-radius: 2px;
+  width: 20px;
+  height: 20px;
+}
+
+.column-button {
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background-color: #333;
+  color: #f1f1f1;
+  cursor: grab;
+  user-select: none;
+
+  &:hover {
+    background-color: #444;
+  }
+}
+
+.column-label {
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 4px;
+}
+
+.input-group-text {
+  width: 120px;
+  height: 2rem;
+  background-color: #2a2a2a;
+  color: #ccc;
+  border-color: #444;
+  font-size: 0.9rem;
+  padding: 0 0.5rem;
+
+  & + select,
+  & + input {
+    height: 2rem;
+  }
+}
+
+/* ================================
+   8. Animations & Effects
+================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animated {
+  animation-fill-mode: both;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.slide-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.slide-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.zoom-in {
+  animation: zoomIn 0.5s ease-out;
+}
+
+/* ================================
+   9. Responsive Sidebar
+================================ */
+#toggleSidebar,
+#toggleStyleSidebar {
+  background-color: #2b2b2b;
+  color: #fff;
+  border: 1px solid #444;
+
+  &:hover {
+    background-color: #3a3a3a;
+  }
+}
+
+/* ================================
+   10. Compact Buttons
+================================ */
+#section-styles button.btn-sm {
+  padding: 2px 6px;
+  font-size: 0.85rem;
+}
+
+/* ================================
+   11. Form & Button Styling
+================================ */
+input[type="color"],
+input[type="text"],
+input[type="number"],
+select,
+.form-control {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #f1f1f1;
+  padding: 0 .75rem;
+  width: 48%;
+
+  &::placeholder {
+    color: rgb(170, 170, 170);
+  }
+
+  &.img-url-input,
+  &.img-link-input,
+  &.video-url-input,
+  &.video-link-input {
+    width: 100%;
+  }
+}
+
+.customCss {
+  .form-control {
+    width: 100%;
+    height: 50px;
+  }
+}
+
+.btn-outline-dark {
+  background-color: #2a2a2a;
+  color: #eee;
+  border-color: #444;
+
+  &:hover {
+    background-color: #3a3a3a;
+  }
+}
+
+.btn-secondary {
+  background-color: #444;
+  color: #fff;
+  border-color: #555;
+
+  &:hover {
+    background-color: #555;
+  }
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #0056b3;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: #000;
+  border-color: #e0a800;
+
+  &:hover {
+    background-color: #e0a800;
+  }
+}
+
+.toast {
+  background-color: #198754;
+  color: #fff;
+}
+
+/* ================================
+   12. Row Edit Button
+================================ */
+.row-edit-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 20;
+  font-size: 12px;
+  padding: 2px 6px;
+  line-height: 1.2;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.edit-mode-btn {
+  background: rgb(54, 54, 54);
+  border: none;
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 3px 6px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: #57a4f6;
+  }
+}
+
+.edit-mode-btn.active {
+  color: #00bfff;
+}
+
+.drag-over {
+    outline: 2px dashed #2196F3;
+    background-color: rgba(33, 150, 243, 0.05);
+    transition: all 0.2s ease-in-out;
+    min-height: 50px;
+}
+
+.sortable-ghost {
+    opacity: 0.5;
+    background: #f0f0f0;
+    border: 1px dashed #ccc;
+}
+
+.sortable-placeholder {
+    outline: 2px dashed #aaa;
+    background-color: #f9f9f9;
+    min-height: 40px;
+    margin: 10px 0;
+}
+
+.editor.btn:hover {
+  border-color: #2c7ed5 !important;
+}
+
+/* SWIPERS */
+.slider-controls .message-box {
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-top: 10px;
+  display: none;
+  max-width: 100%;
+}
+
+.slider-controls .message-box.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.slider-controls .message-box.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+
+
+.swiper-ui {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+
+  .addSlide {
+    display: block;
+    color: #c6c6c6;
+    font-size: 1.5rem;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+/* Remove secondary row style and shit*/
+.editor-block .swiper {
+  .row,
+  .col {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  .col-block-controls,
+  .row-block-controls {
+    display: none;
+  }
+}
+
+body.preview-mode {
+  overflow: auto;
+  cursor: default;
+}
+
+body.preview-mode .delete-btn,
+body.preview-mode .drag-handle,
+body.preview-mode .img-edit-box,
+body.preview-mode .video-edit-box {
+  display: none !important;
+}
+
+.img-edit-box,
+.video-edit-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 100%;
+  height: auto;
+}
+
+.no-border-preview {
+  border: none !important;
+  border: 0 !important;
+  border-color: none !important;
+}
+
+.main-container,
+.main-editor-canvas {
+  width: 100%;
+}
+
+.module .row .col .row,
+.module .row .col .col {
+  border: none !important;
+}
+
+.swiper-slide .col:empty::before {
+  content: 'Drop items here';
+  color: #999;
+  pointer-events: none;
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.resizeWebsite {
+  label {
+    color: white;
+  }
+
+  select {
+    width: 200px;
+  }
+}
+
+#onePageMenuListActive + .input-group {
+  .input-group-text {
+    width: 50px;
+  }
+}
